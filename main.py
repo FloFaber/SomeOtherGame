@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-FPS = 144
+FPS = 60
 
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
@@ -11,7 +11,7 @@ RED = (255, 0, 0)
 GRID_WIDTH = 7
 GRID_HEIGHT = 7
 
-BLOCK_SIZE = 50
+BLOCK_SIZE = 80
 
 WINDOW_WIDTH = BLOCK_SIZE * 7
 WINDOW_HEIGHT = BLOCK_SIZE * 7
@@ -98,17 +98,12 @@ class Point:
         MOVING = True
         self.before_moving = { "x": x, "y": y }
         self.moving = True
-        print("start move")
 
     def stop_move(self, x, y):
-        print("STOP MOVE:")
-        print((x, y))
         global MOVING
 
         if not self.is_occupied(x, y):
-            print("a1")
             if x == self.before_moving["x"] or y == self.before_moving["y"]:
-                print("a2")
                 if x == self.before_moving["x"] + 2:
                     self.remove(x - 1, y)
                 elif x == self.before_moving["x"] - 2:
@@ -144,15 +139,13 @@ class Rect:
     def draw(self):
         pygame.draw.rect(SCREEN, WHITE, self.r, 1)
 
-    def collidepoint(self, pos):
-        return self.r.collidepoint(pos)
-
 
 def draw_grid():
     for x in range(GRID_WIDTH):
         for y in range(GRID_HEIGHT):
             if not ((x <= 1 and y <= 1) or (x >= GRID_WIDTH - 2 and y >= GRID_HEIGHT - 2) or (x >= GRID_WIDTH - 2 and y <= 1) or (x <= 1 and y >= GRID_HEIGHT - 2)):
 
+                # Leave the rectangle in the middle empty
                 if not (x == 3 and y == 3):
                     p = Point(x, y)
                     POINTS.append(p)
